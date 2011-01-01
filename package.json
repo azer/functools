@@ -1,0 +1,18 @@
+{
+  "name":"functools",
+  "version":"1.0.0",
+  "description":"A minimal library of functional operations",
+  "author":"Azer Koculu <azer@kodfabrik.com>",
+  "keywords":["functional","fp"],
+  "directories":{ "lib": "./lib" },
+  "main":"./lib/functools",
+  "build":{
+    "dir":"lib",
+    "filename":"build/functools-1.0.js",
+    "main":"clientside_ns.js",
+    "files":[
+      "functional.js",
+      "../ext/clientside_ns.js"
+    ]
+  }
+}
