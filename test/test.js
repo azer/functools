@@ -20,11 +20,11 @@ tests.compose = function(){
 tests.each = function(){
   var range = [3,1,4,1,5,9],
       serial = 0;
-  functools.each(function(el,ind,seq){
+  assert.equal(functools.each(function(el,ind,seq){
     assert.equal(seq,range);
     assert.equal(ind,serial++);
     assert.ok(ind<seq.length);
-  },range);
+  },range),range);
   
 }
 
