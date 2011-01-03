@@ -1,0 +1,114 @@
+functools(1) -- a minimal javascript library of functional operations
+=====================================================================
+
+## SYNOPSIS
+
+A typical usage: 
+
+    var map = require("functools").map;
+
+    var seq = [3,1,4,1,5,9];
+
+    functools.map(function(el,ind,seq){
+      return el+ind;
+    },seq);
+
+Function Composition: 
+
+    var compose = require("functools").compose;
+
+    compose(update, prettify, display)( selectNodes("body .messages") );
+
+Currying:
+
+    var fn = require("functools");
+
+    var pickEvens = fn.curry(fn.filter)(function(num){ return num%2==0 });
+
+    pickEvens([3,1,4]) // returns [4]
+    pickEvens([1,5,9,2,6,5]) // returns [2,6]
+
+Partial Function Application: 
+
+    Foobar.prototype.doSomething = function(msg){
+      puts(msg);
+      this.corge();
+    }
+
+    server.on("connection", functools.partial(foobar.doSomething, ["Hello World"], foobar));
+
+
+## DESCRIPTION
+
+**Functools** is a minimal JavaScript library providing basic functional
+programming utilities. It's based on a CommonJS module which can be built for
+Web using a Web implementation, as well. DOM programming is one of the main
+targets of this library.
+
+## FUNCTIONS
+
+### compose(*functions ...*)
+Combine *functions* in a new one, passing the result of each function to next
+one, from right to left. 
+
+    function cube(x){ return x*x*x };
+
+    compose(Math.sqrt,cube)(4); // returns 8
+
+### curry(*function*, *args ...*)
+Transform multiple-argument *function* into a chain of functions that return each other until all arguments are gathered.
+
+    function sum(x,y){ return x+y; }
+
+    var add3 = curry(sum, 3);
+
+    add3(14); // returns 17
+    add3(20); // returns 23
+
+### partial(*function*,*initial arguments*,*context *)
+Return a new function which will call *function* with the gathered arguments.
+
+    function testPartial(){
+      var args = reduce(function(x,y){ x+", "+y },arguments);
+
+      console.log("this:",this);
+      console.log("args:",args);
+    }
+
+    partial(testPartial, [3,14], 3.14159)(1,5,9);
+
+The example code above will output:
+
+    this: 3.14159
+    args: 3,14,1,5,9
+
+### EACH/MAP/FILTER/REDUCE
+Functools includes some useful iteration tools, too. Common behaviour of these
+functions is to take a function and list and to call the function passing a
+list element, its index and the list itself.
+
+#### each(*function*,*iterable*)
+Call *function* once for element in *iterable*. 
+
+    each(function(el,ind,list){ console.assert( el == list[ind] ); }, [3,1,4]);
+
+#### map(*function*,*iterable*)
+Invoke *function* once for each element of *iterable*. Creates a new array
+containing the values returned by the function.
+
+    map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
+
+#### filter(*function*,*iterable*)
+Construct a new list from those elements of *iterable* for which *function* returns true.
+
+    filter(function(el,ind,list){ return el%2==0 },[3,1,4]); // returns [4]
+
+#### reduce(*function*,*iterable*)
+Apply *function* cumulatively to the items of *iterable*,  as to reduce the
+*iterable* to a single value
+
+    reduce(function(x,y){ return x*y }, [3,1,4]); // returns 8
+
+
+## SEE ALSO
+- [Roka Lisp](http://github.com/azer/rokalisp)
