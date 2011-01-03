@@ -113,3 +113,12 @@ Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 ## SEE ALSO
 - [Roka Lisp](http://github.com/azer/rokalisp)
 - [JSBuild](http://github.com/azer/jsbuild)
+
+
+[SYNOPSIS]: #SYNOPSIS "SYNOPSIS"
+[DESCRIPTION]: #DESCRIPTION "DESCRIPTION"
+[API]: #API "API"
+[SEE ALSO]: #SEE-ALSO "SEE ALSO"
+
+
+[functools(1)]: functools.1.ron.html

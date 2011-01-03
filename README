@@ -1,13 +1,8 @@
 This is the source code repository of functools, a new Javascript
-library with several functional programming utilities providing both
-serverside and clientside Javascript coders basic functional programming
-tools, such as:
+library for functional programming.
 
-  - Partial Function Application
-  - Currying
-  - Function Composition
-  - Map/Filter/Reduce
-
+Website: http://functools.kodfabrik.com
+Manual: http://functools.kodfabrik.com/man.html
 Tested Platforms: V8 (Node)
 
 vim: tw=75
