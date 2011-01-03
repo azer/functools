@@ -1,5 +1,5 @@
-functools(1) -- a minimal javascript library of functional operations
-=====================================================================
+functools(1) -- a minimal javascript library for functional programming
+=======================================================================
 
 ## SYNOPSIS
 
@@ -35,17 +35,23 @@ Partial Function Application:
       this.corge();
     }
 
-    server.on("connection", functools.partial(foobar.doSomething, ["Hello World"], foobar));
+    server.on("connection", 
+      functools.partial(foobar.doSomething, ["Hello World"], foobar));
 
 
 ## DESCRIPTION
 
-**Functools** is a minimal JavaScript library providing basic functional
-programming utilities. It's based on a CommonJS module which can be built for
-Web using a Web implementation, as well. DOM programming is one of the main
-targets of this library.
+functools is a library for functional programming written in JavaScript. It's
+based on a CommonJS module consists of several function manipulation and list
+iteration tools.
 
-## FUNCTIONS
+Despite functools follows CommonJS specs, my actual aim is to improve the
+experience of DOM programming. Even functools is now ready to be built for
+browsers -and I'm also developing a web implementation of CommonJS- this
+version doesn't include a web build because I couldn't a suitable test tool
+with support of both v8/node and browsers. 
+
+## API
 
 ### compose(*functions ...*)
 Combine *functions* in a new one, passing the result of each function to next
@@ -82,28 +88,23 @@ The example code above will output:
     this: 3.14159
     args: 3,14,1,5,9
 
-### EACH/MAP/FILTER/REDUCE
-Functools includes some useful iteration tools, too. Common behaviour of these
-functions is to take a function and list and to call the function passing a
-list element, its index and the list itself.
-
-#### each(*function*,*iterable*)
+### each(*function*,*iterable*)
 Call *function* once for element in *iterable*. 
 
     each(function(el,ind,list){ console.assert( el == list[ind] ); }, [3,1,4]);
 
-#### map(*function*,*iterable*)
+### map(*function*,*iterable*)
 Invoke *function* once for each element of *iterable*. Creates a new array
 containing the values returned by the function.
 
     map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
 
-#### filter(*function*,*iterable*)
+### filter(*function*,*iterable*)
 Construct a new list from those elements of *iterable* for which *function* returns true.
 
     filter(function(el,ind,list){ return el%2==0 },[3,1,4]); // returns [4]
 
-#### reduce(*function*,*iterable*)
+### reduce(*function*,*iterable*)
 Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 *iterable* to a single value
 
