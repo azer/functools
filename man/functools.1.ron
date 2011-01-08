@@ -107,7 +107,7 @@ Construct a new list from those elements of *iterable* for which *function* retu
 Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 *iterable* to a single value
 
-    reduce(function(x,y){ return x*y }, [3,1,4]); // returns 8
+    reduce(function(x,y){ return x*y }, [3,1,4]); // returns 12
 
 
 ## SEE ALSO
