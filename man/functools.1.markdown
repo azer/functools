@@ -17,7 +17,7 @@ Function Composition:
 
     var compose = require("functools").compose;
 
-    compose(update, prettify, display)( selectNodes("body .messages") );
+    compose(select, update, prettify, display)("body .messages");
 
 Currying:
 
@@ -54,7 +54,7 @@ with support of both v8/node and browsers.
 
 ### compose(*functions ...*)
 Combine *functions* in a new one, passing the result of each function to next
-one, from right to left. 
+one, from left to right. 
 
     function cube(x){ return x*x*x };
 

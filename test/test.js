@@ -14,7 +14,13 @@ tests.compose = function(){
     }
   }
   
-  assert.equal(functools.compose( increment(1), increment(2), increment(3) )(unaltered),unaltered+6);
+  assert.equal(functools.compose(increment(1), increment(2), increment(3) )(unaltered),unaltered+6);
+
+  function cube(x){ return x*x*x };
+  function sum(x){ return x+x; };
+  function div(x){ return x/2; }
+  function mul(x){return x*3; }
+  assert.equal(functools.compose(cube, sum, div, mul)(2), 24);
 };
 
 tests.each = function(){
