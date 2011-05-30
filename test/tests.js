@@ -1,10 +1,9 @@
-var functools = require("../lib/functools"),
-    assert = require("assert"),
-    print = require("sys").print;
+if(typeof require!='undefined'){
+  var functools = require("../lib/functools"),
+      assert = require("assert");
+}
 
-var tests = {};
-
-tests.compose = function(){
+function test_compose(){
 
   var unaltered = Math.floor(Math.random()*100);
 
@@ -23,7 +22,7 @@ tests.compose = function(){
   assert.equal(functools.compose(cube, sum, div, mul)(2), 24);
 };
 
-tests.each = function(){
+function test_each(){
   var range = [3,1,4,1,5,9],
       serial = 0;
   assert.equal(functools.each(function(el,ind,seq){
@@ -34,7 +33,7 @@ tests.each = function(){
   
 }
 
-tests.filter = function(){
+function test_filter(){
   var range = [3,1,4,1,5,9],
       rangeClone = Array.prototype.slice.call(range),
       serial = 0;
@@ -57,7 +56,7 @@ tests.filter = function(){
   assert.equal(evensInRange[0], 4);
 };
 
-tests.curry = function(){
+function test_curry(){
   function sum(a,b,c){
     return a+b+c;
   }
@@ -68,7 +67,7 @@ tests.curry = function(){
    
 }
 
-tests.map = function(){
+function test_map(){
 
   var range = [3,1,4],
       serial = 0;
@@ -95,7 +94,7 @@ tests.map = function(){
   assert.equal(seq[2], 16);
 };
 
-tests.partial = function(){
+function test_partial(){
   var sum = function(){
     return functools.reduce(function(x,y){ return x+y },arguments);
   }
@@ -112,7 +111,7 @@ tests.partial = function(){
 
 };
 
-tests.reduce = function(){
+function test_reduce(){
   var range = [3,1,4,1,5,9];
   assert.equal(functools.reduce(function(x,y,ind,seq){ 
     assert.equal(seq,range);
@@ -126,10 +125,15 @@ tests.reduce = function(){
   },range,2),1080);
 };
 
-var execCounter = 0;
-console.log("Running tests...");
-for(var testName in tests){
-  print("  ["+(++execCounter)+"] Test: '"+testName+"'");
-  tests[testName]();
-  print(" OK\n");
+var tests = {
+  'test_compose':test_compose,
+  'test_each':test_each,
+  'test_filter':test_filter,
+  'test_curry':test_curry,
+  'test_map':test_map,
+  'test_partial':test_partial,
+  'test_reduce':test_reduce,
+  'test_partial':test_partial
 };
+
+typeof module != 'undefined' && ( module.exports = tests );

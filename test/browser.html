@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <style type="text/css" media="screen">
+      html, body { padding:0; margin:100px 0 0 0; background:#eee; }
+      h1, h2 { display:block; text-align:center; font:bold 72px sans-serif; }
+      h1 { color:#0a0; }
+      h2 { color:#f00; }
+      textarea { display:block; width:1000px; height:250px; margin:0 auto; }
+    </style>
+    <script src="../lib/functools.js"></script>
+    <script src="tests.js"></script>
+    <script>
+      var assert = {
+        'equal':function(){
+          if(arguments[0]!=arguments[1]){
+            throw new Error('Assertion Error: '+arguments[0]+'=='+arguments[1]);
+          }
+        },
+        'ok':function(){
+          if(!arguments[0]){
+            throw new Error('Assertion Error: '+arguments[0]);
+          }
+        }
+      }
+
+      var output = '';
+      
+      try {
+
+        for(var name in tests){
+          if(name.substring(0,5)=='test_'){
+            tests[name]();
+            window.console && console.log('Ran "'+name+'"');
+          }
+        }
+
+        output = '<h1>OK</h1>';
+      } catch(exc){
+        output = '<h2>FAIL</h2>'
+               + '<textarea>';
+        for(var key in exc){
+          output += key + '\n====\n' + exc[key] + '\n\n'; 
+        }
+        output += '</textarea>';
+      }
+
+      window.onload = function(){
+        document.body.innerHTML = output;
+      }
+      
+    </script>
+  </head>
+</html>
