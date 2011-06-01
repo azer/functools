@@ -44,12 +44,6 @@ functools is a library for functional programming written in JavaScript. It's
 based on a CommonJS module consists of several function manipulation and list
 iteration tools.
 
-Despite functools follows CommonJS specs, my actual aim is to improve the
-experience of DOM programming. Even functools is now ready to be built for
-browsers -and I'm also developing a web implementation of CommonJS- this
-version doesn't include a web build because I couldn't a suitable test tool
-with support of both v8/node and browsers. 
-
 ## API
 
 ### compose(*functions ...*)

@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "FUNCTOOLS" "1" "January 2011" "" ""
+.TH "FUNCTOOLS" "1" "May 2011" "" ""
 .
 .SH "NAME"
 \fBfunctools\fR \- a minimal javascript library for functional programming
@@ -34,7 +34,7 @@ Function Composition:
 
 var compose = require("functools")\.compose;
 
-compose(update, prettify, display)( selectNodes("body \.messages") );
+compose(select, update, prettify, display)("body \.messages");
 .
 .fi
 .
@@ -79,13 +79,10 @@ server\.on("connection", functools\.partial(foobar\.doSomething, ["Hello World"]
 .SH "DESCRIPTION"
 functools is a library for functional programming written in JavaScript\. It\'s based on a CommonJS module consists of several function manipulation and list iteration tools\.
 .
-.P
-Despite functools follows CommonJS specs, my actual aim is to improve the experience of DOM programming\. Even functools is now ready to be built for browsers \-and I\'m also developing a web implementation of CommonJS\- this version doesn\'t include a web build because I couldn\'t a suitable test tool with support of both v8/node and browsers\.
-.
 .SH "API"
 .
 .SS "compose(<em>functions \.\.\.</em>)"
-Combine \fIfunctions\fR in a new one, passing the result of each function to next one, from right to left\.
+Combine \fIfunctions\fR in a new one, passing the result of each function to next one, from left to right\.
 .
 .IP "" 4
 .
