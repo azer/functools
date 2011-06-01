@@ -22,6 +22,34 @@ function test_compose(){
   assert.equal(functools.compose(cube, sum, div, mul)(2), 24);
 };
 
+function test_compose_async(){
+  var unaltered = Math.floor(Math.random()*100);
+
+  function increment(serial){
+    return function(val,callback){
+      callback(undefined, val+serial);
+    }
+  }
+
+  functools.compose.async( increment(1), increment(2), increment(3) )(unaltered,function(error,result){
+    if(error){
+      throw error;
+    }
+
+    assert.equal(result, unaltered + 6);
+  });
+
+  function cube(x,callback){ callback(undefined,x*x*x) };
+  function sum(x,callback){ callback(undefined,x+x); };
+  function div(x,callback){ callback(undefined,x/2); }
+  function mul(x,callback){ callback(undefined,x*3); }
+
+  functools.compose.async(cube, sum, div, mul)(2,function(error, result){
+    assert.equal(result, 24);
+  });
+}
+
+
 function test_each(){
   var range = [3,1,4,1,5,9],
       serial = 0;
@@ -127,6 +155,7 @@ function test_reduce(){
 
 var tests = {
   'test_compose':test_compose,
+  'test_compose_async':test_compose_async,
   'test_each':test_each,
   'test_filter':test_filter,
   'test_curry':test_curry,

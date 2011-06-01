@@ -54,6 +54,20 @@ one, from left to right.
 
     compose(Math.sqrt,cube)(4); // returns 8
 
+### compose.async(*functions ...*)
+Asynchronous, continuation passing based version of compose function. Requires
+specified functions to call a callback function, passing an error object (if
+there is) and the result to be carried.
+
+    function cube(x,callback){ callback(undefined, x*x*x); }
+
+    function sqrt(x,callback){ callback(undefined, Math.sqrt(x)); }
+
+    compose.async(Math.sqrt, cube)(4,function(error, result){
+      console.log(error); // undefined
+      console.log(result); // puts "8"
+    });
+
 ### curry(*function*, *args ...*)
 Transform multiple-argument *function* into a chain of functions that return each other until all arguments are gathered.
 
@@ -105,5 +119,5 @@ Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 
 
 ## SEE ALSO
-- [Roka Lisp](http://github.com/azer/rokalisp)
-- [JSBuild](http://github.com/azer/jsbuild)
+- [Functional Programming - Eloquent JavaScript](http://eloquentjavascript.net/chapter6.html)
+- [Underscore.js](http://documentcloud.github.com/underscore/)

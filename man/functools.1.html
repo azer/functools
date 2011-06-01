@@ -129,6 +129,22 @@ one, from left to right.</p>
 compose(Math.sqrt,cube)(4); // returns 8
 </code></pre>
 
+<h3 id="compose-async-functions-">compose.async(<em>functions ...</em>)</h3>
+
+<p>Asynchronous, continuation passing based version of compose function. Requires
+specified functions to call a callback function, passing an error object (if
+there is) and the result to be carried.</p>
+
+<pre><code>function cube(x,callback){ callback(undefined, x*x*x); }
+
+function sqrt(x,callback){ callback(undefined, Math.sqrt(x)); }
+
+compose.async(Math.sqrt, cube)(4,function(error, result){
+  console.log(error); // undefined
+  console.log(result); // puts "8"
+});
+</code></pre>
+
 <h3 id="curry-function-args-">curry(<em>function</em>, <em>args ...</em>)</h3>
 
 <p>Transform multiple-argument <em>function</em> into a chain of functions that return each other until all arguments are gathered.</p>
@@ -194,15 +210,15 @@ containing the values returned by the function.</p>
 <h2 id="SEE-ALSO">SEE ALSO</h2>
 
 <ul>
-<li><a href="http://github.com/azer/rokalisp">Roka Lisp</a></li>
-<li><a href="http://github.com/azer/jsbuild">JSBuild</a></li>
+<li><a href="http://eloquentjavascript.net/chapter6.html">Functional Programming - Eloquent JavaScript</a></li>
+<li><a href="http://documentcloud.github.com/underscore/">Underscore.js</a></li>
 </ul>
 
 
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>May 2011</li>
+    <li class='tc'>June 2011</li>
     <li class='tr'>functools(1)</li>
   </ol>
 
