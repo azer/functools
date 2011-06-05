@@ -49,6 +49,14 @@ function test_compose_async(){
   });
 }
 
+function test_compose_async_error(){
+  functools.compose.async(function(_,callback){
+    callback(new Error('foobar'),9);
+  },[3,1,4],function(error, result){
+    assert.equal(error.message, 'foobar');
+  });
+}
+
 
 function test_each(){
   var range = [3,1,4,1,5,9],
@@ -89,18 +97,9 @@ function test_filter_async(){
       rangeClone = Array.prototype.slice.call(range),
       serial = 0;
 
-  functools.filter.async(function(el,ind,seq,callback){
-
-    assert.equal(serial++,ind);
-    assert.equal(range[ind], el);
-    assert.equal(seq[ind],el);
-
-    callback(undefined, el%2==0); 
-  },range, function(error, evensInRange){
-    if(error){
-      throw error;
-    }
-
+  functools.filter.async(function(el,callback){
+    callback(el%2==0); 
+  },range, function(evensInRange){
     assert.equal(evensInRange.length, 1);
     assert.equal(evensInRange[0], 4);
   });
@@ -144,6 +143,42 @@ function test_map(){
   assert.equal(seq[2], 16);
 };
 
+function test_map_async(){
+
+  var range = [3,1,4];
+  
+  functools.map.async(function(el,callback){
+    callback(undefined, el*el);
+  },range,function(error, seq){
+
+    if(error){
+      throw error;
+    }
+
+
+    assert.equal(range[0], 3);
+    assert.equal(range[1], 1);
+    assert.equal(range[2], 4);
+
+    assert.equal(seq[0], 9);
+    assert.equal(seq[1], 1);
+    assert.equal(seq[2], 16);
+  });
+};
+
+function test_map_async_error(){
+  functools.map.async(function(_,callback){
+    callback(new Error('foobar'),9);
+  },[3,1,4],function(error, list){
+    assert.equal(list[0], 9);
+    assert.equal(list[1], 1);
+    assert.equal(list[2], 4);
+
+    assert.equal(error.message, 'foobar');
+  });
+}
+
+
 function test_partial(){
   var sum = function(){
     return functools.reduce(function(x,y){ return x+y },arguments);
@@ -163,28 +198,49 @@ function test_partial(){
 
 function test_reduce(){
   var range = [3,1,4,1,5,9];
-  assert.equal(functools.reduce(function(x,y,ind,seq){ 
-    assert.equal(seq,range);
-    assert.equal(y,seq[ind]);
-
+  assert.equal(functools.reduce(function(x,y,seq){ 
     return x*y;
   },range),540);
 
-  assert.equal(functools.reduce(function(x,y,ind,seq){
-    return x*y;
-  },range,2),1080);
+};
+
+function test_reduce_async(){
+  var range = [3,1,4,1,5,9];
+  functools.reduce.async(function(x,y,callback){ 
+    callback(undefined, x*y);
+  },range,function(error, result){
+    if(error){
+      throw error;
+    }
+    assert.equal(result, 540);
+  });
+
+};
+
+function test_reduce_async_error(){
+  var range = [3,1,4,1,5,9];
+  functools.reduce.async(function(_,_,callback){ 
+    callback(new Error('foobar'));
+  },range,function(error, result){
+    assert.equal(error.message, 'foobar');
+  });
 };
 
 var tests = {
   'test_compose':test_compose,
   'test_compose_async':test_compose_async,
+  'test_compose_async_error':test_compose_async_error,
   'test_each':test_each,
   'test_filter':test_filter,
   'test_filter_async':test_filter_async,
   'test_curry':test_curry,
   'test_map':test_map,
+  'test_map_async':test_map_async,
+  'test_map_async_error':test_map_async_error,
   'test_partial':test_partial,
   'test_reduce':test_reduce,
+  'test_reduce_async':test_reduce_async,
+  'test_reduce_async_error':test_reduce_async_error,
   'test_partial':test_partial
 };
 
