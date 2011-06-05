@@ -106,6 +106,14 @@ containing the values returned by the function.
 
     map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
 
+### map.async(*function*,*iterable*)
+Async version of **map**.
+
+Invoke *function* once for each element of *iterable*. Creates a new array
+containing the values returned by the function.
+
+    map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
+
 ### filter(*function*,*iterable*)
 Construct a new list from those elements of *iterable* for which *function* returns true.
 
