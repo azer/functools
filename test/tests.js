@@ -84,6 +84,28 @@ function test_filter(){
   assert.equal(evensInRange[0], 4);
 };
 
+function test_filter_async(){
+  var range = [3,1,4,1,5,9],
+      rangeClone = Array.prototype.slice.call(range),
+      serial = 0;
+
+  functools.filter.async(function(el,ind,seq,callback){
+
+    assert.equal(serial++,ind);
+    assert.equal(range[ind], el);
+    assert.equal(seq[ind],el);
+
+    callback(undefined, el%2==0); 
+  },range, function(error, evensInRange){
+    if(error){
+      throw error;
+    }
+
+    assert.equal(evensInRange.length, 1);
+    assert.equal(evensInRange[0], 4);
+  });
+}
+
 function test_curry(){
   function sum(a,b,c){
     return a+b+c;
@@ -158,6 +180,7 @@ var tests = {
   'test_compose_async':test_compose_async,
   'test_each':test_each,
   'test_filter':test_filter,
+  'test_filter_async':test_filter_async,
   'test_curry':test_curry,
   'test_map':test_map,
   'test_partial':test_partial,
