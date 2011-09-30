@@ -125,7 +125,7 @@ Call async *function* once for each element in *iterable*, receiving a boolean
 parameter, and construct a new array of all the values for which *function*
 produces *true*
 
-    filter(function(el,callback){ callback(undefined,el%2==0); },[3,1,4],function(error, newArray){
+    filter(function(el,callback){ callback(el%2==0); },[3,1,4],function(newArray){
       assert.equal(newArray[0], 4); // true
     });
 

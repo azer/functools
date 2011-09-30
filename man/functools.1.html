@@ -119,7 +119,7 @@ iteration tools.</p>
 
 <h2 id="API">API</h2>
 
-<h3 id="compose-functions-">compose(<em>functions ...</em>)</h3>
+<h3 id="compose-functions-value-">compose(<em>functions ...</em>)(<em>value</em>)</h3>
 
 <p>Combine <em>functions</em> in a new one, passing the result of each function to next
 one, from left to right.</p>
@@ -129,7 +129,7 @@ one, from left to right.</p>
 compose(Math.sqrt,cube)(4); // returns 8
 </code></pre>
 
-<h3 id="compose-async-functions-">compose.async(<em>functions ...</em>)</h3>
+<h3 id="compose-async-functions-value-callback-">compose.async(<em>functions ...</em>)(<em>value</em>,<em>callback</em>)</h3>
 
 <p>Asynchronous, continuation passing based version of compose function. Requires
 specified functions to call a callback function, passing an error object (if
@@ -192,21 +192,32 @@ containing the values returned by the function.</p>
 <pre><code>map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
 </code></pre>
 
-<h3 id="map-async-function-iterable-">map.async(<em>function</em>,<em>iterable</em>)</h3>
+<h3 id="map-async-function-iterable-callback-">map.async(<em>function</em>,<em>iterable</em>, <em>callback</em>)</h3>
 
-<p>Async version of <strong>map</strong>.</p>
+<p>Apply async <em>function</em> to every item of <em>iterable</em>, receiving a callback
+function which takes error (if there is) and replacement parameters.</p>
 
-<p>Invoke <em>function</em> once for each element of <em>iterable</em>. Creates a new array
-containing the values returned by the function.</p>
-
-<pre><code>map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
+<pre><code>map(function(el,callback){ callback(undefined,el*el); },[3,1,4,1,5,9],function(error, newArray){
+  assert.equal(newArray[0], 9); // true
+});
 </code></pre>
 
 <h3 id="filter-function-iterable-">filter(<em>function</em>,<em>iterable</em>)</h3>
 
-<p>Construct a new list from those elements of <em>iterable</em> for which <em>function</em> returns true.</p>
+<p>Construct a new array from those elements of <em>iterable</em> for which <em>function</em> returns true.</p>
 
 <pre><code>filter(function(el,ind,list){ return el%2==0 },[3,1,4]); // returns [4]
+</code></pre>
+
+<h3 id="filter-async-function-iterable-callback-">filter.async(<em>function</em>,<em>iterable</em>, <em>callback</em>)</h3>
+
+<p>Call async <em>function</em> once for each element in <em>iterable</em>, receiving a boolean
+parameter, and construct a new array of all the values for which <em>function</em>
+produces <em>true</em></p>
+
+<pre><code>filter(function(el,callback){ callback(el%2==0); },[3,1,4],function(newArray){
+  assert.equal(newArray[0], 4); // true
+});
 </code></pre>
 
 <h3 id="reduce-function-iterable-">reduce(<em>function</em>,<em>iterable</em>)</h3>
@@ -217,18 +228,28 @@ containing the values returned by the function.</p>
 <pre><code>reduce(function(x,y){ return x*y }, [3,1,4]); // returns 12
 </code></pre>
 
+<h3 id="reduce-async-function-iterable-callback-">reduce.async(<em>function</em>,<em>iterable</em>, <em>callback</em>)</h3>
+
+<p>Apply version of <em>reduce</em>. See the example below.</p>
+
+<pre><code>reduce(function(x,y,callback){ callback(undefined,x*y); },[3,1,4],function(error, result){
+  assert.equal(result, 12); // true
+});
+</code></pre>
+
 <h2 id="SEE-ALSO">SEE ALSO</h2>
 
 <ul>
 <li><a href="http://eloquentjavascript.net/chapter6.html">Functional Programming - Eloquent JavaScript</a></li>
 <li><a href="http://documentcloud.github.com/underscore/">Underscore.js</a></li>
+<li><a href="http://github.com/azer/roka">Roka Lisp</a></li>
 </ul>
 
 
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>June 2011</li>
+    <li class='tc'>September 2011</li>
     <li class='tr'>functools(1)</li>
   </ol>
 

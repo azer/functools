@@ -46,7 +46,7 @@ iteration tools.
 
 ## API
 
-### compose(*functions ...*)
+### compose(*functions ...*)(*value*)
 Combine *functions* in a new one, passing the result of each function to next
 one, from left to right. 
 
@@ -54,7 +54,7 @@ one, from left to right.
 
     compose(Math.sqrt,cube)(4); // returns 8
 
-### compose.async(*functions ...*)
+### compose.async(*functions ...*)(*value*,*callback*)
 Asynchronous, continuation passing based version of compose function. Requires
 specified functions to call a callback function, passing an error object (if
 there is) and the result to be carried.
@@ -106,18 +106,28 @@ containing the values returned by the function.
 
     map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
 
-### map.async(*function*,*iterable*)
-Async version of **map**.
+### map.async(*function*,*iterable*, *callback*)
+Apply async *function* to every item of *iterable*, receiving a callback
+function which takes error (if there is) and replacement parameters.
 
-Invoke *function* once for each element of *iterable*. Creates a new array
-containing the values returned by the function.
 
-    map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
+    map(function(el,callback){ callback(undefined,el*el); },[3,1,4,1,5,9],function(error, newArray){
+      assert.equal(newArray[0], 9); // true
+    });
 
 ### filter(*function*,*iterable*)
-Construct a new list from those elements of *iterable* for which *function* returns true.
+Construct a new array from those elements of *iterable* for which *function* returns true.
 
     filter(function(el,ind,list){ return el%2==0 },[3,1,4]); // returns [4]
+
+### filter.async(*function*,*iterable*, *callback*)
+Call async *function* once for each element in *iterable*, receiving a boolean
+parameter, and construct a new array of all the values for which *function*
+produces *true*
+
+    filter(function(el,callback){ callback(el%2==0); },[3,1,4],function(newArray){
+      assert.equal(newArray[0], 4); // true
+    });
 
 ### reduce(*function*,*iterable*)
 Apply *function* cumulatively to the items of *iterable*,  as to reduce the
@@ -125,10 +135,17 @@ Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 
     reduce(function(x,y){ return x*y }, [3,1,4]); // returns 12
 
+### reduce.async(*function*,*iterable*, *callback*)
+Apply version of *reduce*. See the example below.
+
+    reduce(function(x,y,callback){ callback(undefined,x*y); },[3,1,4],function(error, result){
+      assert.equal(result, 12); // true
+    });
 
 ## SEE ALSO
 - [Functional Programming - Eloquent JavaScript](http://eloquentjavascript.net/chapter6.html)
 - [Underscore.js](http://documentcloud.github.com/underscore/)
+- [Roka Lisp](http://github.com/azer/roka)
 
 
 [SYNOPSIS]: #SYNOPSIS "SYNOPSIS"
