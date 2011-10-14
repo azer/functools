@@ -57,6 +57,8 @@
     <a href="#SYNOPSIS">SYNOPSIS</a>
     <a href="#DESCRIPTION">DESCRIPTION</a>
     <a href="#API">API</a>
+    <a href="#juxt-functions-">juxt(functions ...)</a>
+    <a href="#juxt-async-functions-">juxt.async(functions ...)</a>
     <a href="#SEE-ALSO">SEE ALSO</a>
   </div>
 
@@ -220,6 +222,34 @@ produces <em>true</em></p>
 });
 </code></pre>
 
+<h2 id="juxt-functions-">juxt(<em>functions ...</em>)</h2>
+
+<p>Take a set of functions, return a function that is the juxtaposition of those
+functions. The returned function takes a variable number of arguments and
+returns a list containing the result of applying each fn to the arguments.</p>
+
+<pre><code>function inc1(n){ return n+1 };
+function inc2(n){ return n+2 };
+function inc3(n){ return n+3 };
+
+juxt(inc1, inc2, inc3)([3,1,4]); // returns [4,3,7]
+</code></pre>
+
+<h2 id="juxt-async-functions-">juxt.async(<em>functions ...</em>)</h2>
+
+<p>Async implementation of <em>juxt</em>.</p>
+
+<pre><code>function md5(path, callback){ fetch(path, callback); }
+function sha1(path, callback){ fetch(path, callback); }
+function crc32(path, callback){ fetch(path, callback); }
+
+juxt.async(md5, sha1, crc32)("hello world", function(error,  result){
+  result[0] =&gt; md5("hello world")
+  result[1] =&gt; sha1("hello world")
+  result[2] =&gt; crc32("hello world")
+});
+</code></pre>
+
 <h3 id="reduce-function-iterable-">reduce(<em>function</em>,<em>iterable</em>)</h3>
 
 <p>Apply <em>function</em> cumulatively to the items of <em>iterable</em>,  as to reduce the
@@ -249,7 +279,7 @@ produces <em>true</em></p>
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>September 2011</li>
+    <li class='tc'>October 2011</li>
     <li class='tr'>functools(1)</li>
   </ol>
 

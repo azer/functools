@@ -57,6 +57,16 @@ function test_compose_async_error(){
   });
 }
 
+function test_curry(){
+  function sum(a,b,c){
+    return a+b+c;
+  }
+ 
+  assert.equal( functools.curry(sum)()(3)()(1)(4),8);
+  assert.equal( functools.curry(sum,3,1,4),8);
+  assert.equal( functools.curry(sum,3)(1,4),8);
+   
+}
 
 function test_each(){
   var range = [3,1,4,1,5,9],
@@ -105,15 +115,53 @@ function test_filter_async(){
   });
 }
 
-function test_curry(){
-  function sum(a,b,c){
-    return a+b+c;
-  }
- 
-  assert.equal( functools.curry(sum)()(3)()(1)(4),8);
-  assert.equal( functools.curry(sum,3,1,4),8);
-  assert.equal( functools.curry(sum,3)(1,4),8);
-   
+function test_juxt(){
+  var unaltered = Math.floor(Math.random()*100);
+  function inc(serial){ return function(val){ return val+serial; } }
+
+  var result = functools.juxt(inc(1), inc(2), inc(3) )(unaltered);
+  assert.equal(result[0], unaltered+1);
+  assert.equal(result[1], unaltered+2);
+  assert.equal(result[2], unaltered+3);
+
+  function cube(x){ return x*x*x };
+  function sum(x){ return x+x; };
+  function div(x){ return x/2; }
+  function mul(x){return x*3; }
+
+  result = functools.juxt(cube, sum, div, mul)(2);
+  assert.equal(result[0], 8);
+  assert.equal(result[1], 4);
+  assert.equal(result[2], 1);
+  assert.equal(result[3], 6);
+}
+
+function test_juxt_async(){
+  var unaltered = Math.floor(Math.random()*100);
+
+  function inc(serial){ return function(val, callback){ callback(undefined, val+serial); } }
+
+  functools.juxt.async( inc(1), inc(2), inc(3) )(unaltered,function(error,result){
+    if(error){
+      throw error;
+    }
+
+    assert.equal(result[0], unaltered+1);
+    assert.equal(result[1], unaltered+2);
+    assert.equal(result[2], unaltered+3);
+  });
+
+  function cube(x,callback){ callback(undefined,x*x*x) };
+  function sum(x,callback){ callback(undefined,x+x); };
+  function div(x,callback){ callback(undefined,x/2); }
+  function mul(x,callback){ callback(undefined,x*3); }
+
+  functools.juxt.async(cube, sum, div, mul)(2,function(error, result){
+  assert.equal(result[0], 8);
+  assert.equal(result[1], 4);
+  assert.equal(result[2], 1);
+  assert.equal(result[3], 6);
+  });
 }
 
 function test_map(){
@@ -230,10 +278,12 @@ var tests = {
   'test_compose':test_compose,
   'test_compose_async':test_compose_async,
   'test_compose_async_error':test_compose_async_error,
+  'test_curry':test_curry,
   'test_each':test_each,
   'test_filter':test_filter,
   'test_filter_async':test_filter_async,
-  'test_curry':test_curry,
+  'test_juxt':test_juxt,
+  'test_juxt_async':test_juxt_async,
   'test_map':test_map,
   'test_map_async':test_map_async,
   'test_map_async_error':test_map_async_error,

@@ -129,6 +129,30 @@ produces *true*
       assert.equal(newArray[0], 4); // true
     });
 
+## juxt(*functions ...*)
+Take a set of functions, return a function that is the juxtaposition of those
+functions. The returned function takes a variable number of arguments and
+returns a list containing the result of applying each fn to the arguments.
+
+    function inc1(n){ return n+1 };
+    function inc2(n){ return n+2 };
+    function inc3(n){ return n+3 };
+
+    juxt(inc1, inc2, inc3)([3,1,4]); // returns [4,3,7]
+
+## juxt.async(*functions ...*)
+Async implementation of *juxt*. 
+
+    function md5(path, callback){ fetch(path, callback); }
+    function sha1(path, callback){ fetch(path, callback); }
+    function crc32(path, callback){ fetch(path, callback); }
+
+    juxt.async(md5, sha1, crc32)("hello world", function(error,  result){
+      result[0] => md5("hello world")
+      result[1] => sha1("hello world")
+      result[2] => crc32("hello world")
+    });
+
 ### reduce(*function*,*iterable*)
 Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 *iterable* to a single value
