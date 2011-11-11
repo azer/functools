@@ -1,9 +1,10 @@
 {
   "name":"functools",
-  "version":"1.1.0",
+  "version":"1.1.1",
   "description":"A minimal library of functional operations",
   "author":"Azer Koculu <azer@kodfabrik.com>",
   "keywords":["functional","fp"],
   "directories":{ "lib": "./lib" },
-  "main":"./lib/functools"
+  "main":"./lib/functools",
+  "repository": { "type":"git",  "url" : "http://github.com/azer/functools.git" }
 }
