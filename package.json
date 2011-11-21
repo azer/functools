@@ -1,6 +1,6 @@
 {
   "name":"functools",
-  "version":"1.1.1",
+  "version":"1.1.2",
   "description":"A minimal library of functional operations",
   "author":"Azer Koculu <azer@kodfabrik.com>",
   "keywords":["functional","fp"],

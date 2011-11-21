@@ -1,8 +1,0 @@
-This is the source code repository of functools, a new Javascript
-library for functional programming.
-
-Website: http://functools.kodfabrik.com
-Manual: http://functools.kodfabrik.com/man.html
-Tested Platforms: V8 (Node), Chromium 12, Firefox 4
-
-vim: tw=75
