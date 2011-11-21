@@ -4,7 +4,7 @@ Inspired by: Common Lisp, Clojure and Python.
 
 Version: 1.1.3
 
-## SYNOPSIS
+# SYNOPSIS
 
 A typical usage:
 
@@ -51,15 +51,21 @@ pickEvens([1,5,9,2,6,5]) // returns [2,6]
 ```
 
 
-## DESCRIPTION
+# INSTALL
 
-functools is a library for functional programming written in JavaScript. It's
-based on a single CommonJS module (that can be run on web browsers, as well) that consists of several function manipulation and list
-iteration tools.
+```bash
+$ npm install functools
+```
 
-## API
+or 
 
-### compose(*functions ...*)(*value*)
+```bash
+$ wget https://raw.github.com/azer/functools/master/lib/functools.js
+```
+
+# API
+
+## compose(*functions ...*)(*value*)
 
 Combine *functions* in a new one, passing the result of each function to next
 one, from left to right.
@@ -70,7 +76,7 @@ function cube(x){ return x*x*x };
 compose(Math.sqrt,cube)(4); // returns 8
 ```
 
-### compose.async(*functions ...*)(*value*,*callback*)
+## compose.async(*functions ...*)(*value*,*callback*)
 
 Asynchronous, continuation passing based version of compose function. Requires
 specified functions to call a callback function, passing an error object (if
@@ -89,7 +95,7 @@ messageTransmission({ msg:"Hello !", 'user': 3 }, function(error, result){
 
 ```
 
-### curry(*function*, *args ...*)
+## curry(*function*, *args ...*)
 
 Transform multiple-argument *function* into a chain of functions that return each other until all arguments are gathered.
 
@@ -103,7 +109,7 @@ add3(20); // returns 23
 ```
 
 
-### partial(*function*,*initial arguments*,*context *)
+## partial(*function*,*initial arguments*,*context *)
 
 Return a new function which will call *function* with the gathered arguments.
 
@@ -124,7 +130,7 @@ this: 3.14159
 args: 3,14,1,5,9
 ```
 
-### each(*function*,*iterable*)
+## each(*function*,*iterable*)
 
 Call *function* once for element in *iterable*.
 
@@ -132,7 +138,7 @@ Call *function* once for element in *iterable*.
 each(function(el,ind,list){ console.assert( el == list[ind] ); }, [3,1,4]);
 ```
 
-### map(*function*,*iterable*)
+## map(*function*,*iterable*)
 
 Invoke *function* once for each element of *iterable*. Creates a new array
 containing the values returned by the function.
@@ -142,7 +148,7 @@ map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,2
 ```
 
 
-### map.async(*function*,*iterable*, *callback*)
+## map.async(*function*,*iterable*, *callback*)
 
 Apply async *function* to every item of *iterable*, receiving a callback
 function which takes error (if there is) and replacement parameters.
@@ -157,7 +163,7 @@ map.async(readFile, ['./foo/bar', './foo/qux', './corge'], function(error, files
 });
 ```
 
-### filter(*function*,*iterable*)
+## filter(*function*,*iterable*)
 
 Construct a new array from those elements of *iterable* for which *function* returns true.
 
@@ -165,7 +171,7 @@ Construct a new array from those elements of *iterable* for which *function* ret
 filter(function(el,ind,list){ return el%2==0 },[3,1,4]); // returns [4]
 ```
 
-### filter.async(*function*,*iterable*, *callback*)
+## filter.async(*function*,*iterable*, *callback*)
 
 Call async *function* once for each element in *iterable*, receiving a boolean
 parameter, and construct a new array of all the values for which *function*
@@ -217,7 +223,7 @@ juxt.async(md5, sha1, crc32)("hello world", function(error,  result){
 });
 ```
 
-### reduce(*function*,*iterable*)
+## reduce(*function*,*iterable*)
 
 Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 *iterable* to a single value
@@ -226,7 +232,7 @@ Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 reduce(function(x,y){ return x*y }, [3,1,4]); // returns 12
 ```
 
-### reduce.async(*function*,*iterable*, *callback*)
+## reduce.async(*function*,*iterable*, *callback*)
 
 Async implementation of *reduce*.
 
@@ -244,5 +250,5 @@ reduce.async(usernames, users, function(error, result){
 
 ```
 
-## SEE ALSO
+# SEE ALSO
 - [Functional Programming - Eloquent JavaScript](http://eloquentjavascript.net/chapter6.html)
