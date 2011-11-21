@@ -181,7 +181,7 @@ produces *true*
 
 var users = [ 3, 5, 8, 13, 21 ]; // only user#3 and user#8 have permission in this example
 
-function hasPermission(userId, callback){ ... callback(/* true or false *); }
+function hasPermission(userId, callback){ ... callback(/* true or false */); }
 
 filter.async(hasPermission, users, function(permittedUsers){
   assert.equal(permittedUsers.length, 4);
