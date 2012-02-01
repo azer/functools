@@ -59,13 +59,13 @@ function test_compose_async_error(){
 
 function test_curry(){
   function sum(a,b,c){
-    return a+b+c;
-  }
+    return a+b+c;
+ }
  
-  assert.equal( functools.curry(sum)()(3)()(1)(4),8);
-  assert.equal( functools.curry(sum,3,1,4),8);
-  assert.equal( functools.curry(sum,3)(1,4),8);
-   
+  assert.equal( functools.curry(sum)()(3)()(1)(4),8);
+  assert.equal( functools.curry(sum,3,1,4),8);
+  assert.equal( functools.curry(sum,3)(1,4),8);
+
 }
 
 function test_each(){
@@ -134,6 +134,13 @@ function test_juxt(){
   assert.equal(result[1], 4);
   assert.equal(result[2], 1);
   assert.equal(result[3], 6);
+
+  result = functools.juxt({ 'cube': cube, 'sum': sum, 'div': div, 'mul': mul })(2);
+  assert.equal(result.cube, 8);
+  assert.equal(result.sum, 4);
+  assert.equal(result.div, 1);
+  assert.equal(result.mul, 6);
+
 }
 
 function test_juxt_async(){
@@ -157,11 +164,21 @@ function test_juxt_async(){
   function mul(x,callback){ callback(undefined,x*3); }
 
   functools.juxt.async(cube, sum, div, mul)(2,function(error, result){
-  assert.equal(result[0], 8);
-  assert.equal(result[1], 4);
-  assert.equal(result[2], 1);
-  assert.equal(result[3], 6);
+    if(error) throw error;
+    assert.equal(result[0], 8);
+    assert.equal(result[1], 4);
+    assert.equal(result[2], 1);
+    assert.equal(result[3], 6);
   });
+
+  functools.juxt.async({ 'cube':cube, 'sum':sum, 'div':div, 'mul':mul })(2,function(error, result){
+    if(error) throw error;
+    assert.equal(result.cube, 8);
+    assert.equal(result.sum, 4);
+    assert.equal(result.div, 1);
+    assert.equal(result.mul, 6);
+  });
+
 }
 
 function test_map(){
@@ -189,6 +206,22 @@ function test_map(){
   assert.equal(seq[0], 9);
   assert.equal(seq[1], 1);
   assert.equal(seq[2], 16);
+
+  range = { 'a': 3, 'b': 1, 'c': 4 };
+
+  seq = functools.map(function(el, key, self){
+    assert.equal(el, range[key]);
+    return el * el;
+  }, range);
+
+  assert.equal(range.a, 3);
+  assert.equal(range.b, 1);
+  assert.equal(range.c, 4);
+
+  assert.equal(seq.a, 9);
+  assert.equal(seq.b, 1);
+  assert.equal(seq.c, 16);
+
 };
 
 function test_map_async(){
@@ -203,7 +236,6 @@ function test_map_async(){
       throw error;
     }
 
-
     assert.equal(range[0], 3);
     assert.equal(range[1], 1);
     assert.equal(range[2], 4);
@@ -212,6 +244,24 @@ function test_map_async(){
     assert.equal(seq[1], 1);
     assert.equal(seq[2], 16);
   });
+
+  range = { 'a': 3, 'b': 1, 'c': 4 };
+  
+  functools.map.async(function(el,callback){ callback(undefined, el*el); }, range, function(error, seq){
+
+    if(error){
+      throw error;
+    }
+
+    assert.equal(range.a, 3);
+    assert.equal(range.b, 1);
+    assert.equal(range.c, 4);
+
+    assert.equal(seq.a, 9);
+    assert.equal(seq.b, 1);
+    assert.equal(seq.c, 16);
+  });
+
 };
 
 function test_map_async_error(){
