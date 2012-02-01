@@ -202,24 +202,22 @@ function inc1(n){ return n+1 };
 function inc2(n){ return n+2 };
 function inc3(n){ return n+3 };
 
-juxt(inc1, inc2, inc3)([3,1,4]); // returns [4,3,7]
+juxt(inc1, inc2, inc3)(314); // returns [315,316,317]
 ```
-
-
 
 ## juxt.async(*functions ...*)
 
 Async implementation of *juxt*.
 
 ```javascript
-function md5(path, callback){ fetch(path, callback); }
-function sha1(path, callback){ fetch(path, callback); }
-function crc32(path, callback){ fetch(path, callback); }
+function turkish(word, callback){ /* some magic here */ }
+function french(word, callback){ /* some magic here */ }
+function polish(word, callback){ /* some magic here */ }
 
-juxt.async(md5, sha1, crc32)("hello world", function(error,  result){
-  result[0] => md5("hello world")
-  result[1] => sha1("hello world")
-  result[2] => crc32("hello world")
+juxt.async(turkish, french, polish)("hello", function(error,  results){
+  assert.equal(results[0], "merhaba");
+  assert.equal(results[1], "bonjour");
+  assert.equal(results[2], "cześć");
 });
 ```
 
