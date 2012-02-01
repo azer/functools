@@ -26,6 +26,7 @@ compose.async(findFiles, readContents, upload)('~/messages', function(error, upl
 ```
 
 Async Juxtaposition:
+
 ```javascript
 function turkish(word, callback){ /* some magic here */ }
 function french(word, callback){ /* some magic here */ }
