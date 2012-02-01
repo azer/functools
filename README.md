@@ -2,21 +2,7 @@ functools is a JavaScript library for functional programming.
 
 Inspired by: Common Lisp, Clojure and Python.
 
-Version: 1.1.3
-
 # SYNOPSIS
-
-A typical usage:
-
-```javascript
-var map = require("functools").map;
-
-var seq = [3,1,4,1,5,9];
-
-functools.map(function(el,ind,seq){
-  return el+ind;
-},seq);
-```
 
 Function Composition:
 
@@ -36,6 +22,19 @@ function upload(files, callback){}
 
 compose.async(findFiles, readContents, upload)('~/messages', function(error, uploadResult){
   ...
+});
+```
+
+Async Juxtaposition:
+```javascript
+function turkish(word, callback){ /* some magic here */ }
+function french(word, callback){ /* some magic here */ }
+function polish(word, callback){ /* some magic here */ }
+
+juxt.async({ 'tr': turkish, 'fr': french, 'pl': polish })("hello", function(error,  results){
+  assert.equal(results.tr, "merhaba");
+  assert.equal(results.fr, "bonjour");
+  assert.equal(results.pl, "cześć");
 });
 ```
 
@@ -140,13 +139,29 @@ each(function(el,ind,list){ console.assert( el == list[ind] ); }, [3,1,4]);
 
 ## map(*function*,*iterable*)
 
-Invoke *function* once for each element of *iterable*. Creates a new array
+Invoke *function* once for each element of *iterable*. Creates a new iterable
 containing the values returned by the function.
 
 ```javascript
-map(function(el,ind,list){ return el*el },[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
+
+function square(n){ 
+  return n*n;
+}
+
+map(square,[3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
 ```
 
+Objects can be passed as well;
+
+```javascript
+var dict = { 'en':'hello', 'tr': 'merhaba', 'fr':'bonjour' };
+
+function capitalize(){
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+map(capitalize, dict); // returns { 'en':'Hello', 'tr':'Merhaba', 'fr':'Bonjour' }
+```
 
 ## map.async(*function*,*iterable*, *callback*)
 
