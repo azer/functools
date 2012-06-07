@@ -6,5 +6,9 @@
   "keywords":["functional","fp"],
   "directories":{ "lib": "./lib" },
   "main":"./lib/functools",
-  "repository": { "type":"git",  "url" : "http://github.com/azer/functools.git" }
+  "repository": { "type":"git",  "url" : "http://github.com/azer/functools.git" },
+  "devDependencies":{
+    "lowkick":"0.x",
+    "highkick":"1.x"
+  }
 }
