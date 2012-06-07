@@ -12,7 +12,7 @@ function test_compose(){
       return val+serial;
     }
   }
-  
+
   assert.equal(functools.compose(increment(1), increment(2), increment(3) )(unaltered),unaltered+6);
 
   function cube(x){ return x*x*x };
@@ -61,7 +61,7 @@ function test_curry(){
   function sum(a,b,c){
     return a+b+c;
  }
- 
+
   assert.equal( functools.curry(sum)()(3)()(1)(4),8);
   assert.equal( functools.curry(sum,3,1,4),8);
   assert.equal( functools.curry(sum,3)(1,4),8);
@@ -76,7 +76,7 @@ function test_each(){
     assert.equal(ind,serial++);
     assert.ok(ind<seq.length);
   },range),range);
-  
+
 }
 
 function test_filter(){
@@ -85,7 +85,7 @@ function test_filter(){
       serial = 0;
 
   var evensInRange = functools.filter(function(el,ind,seq){
-    
+
     assert.equal(range.length, rangeClone.length);
     for(var i = -1, len=rangeClone.length; ++i < len; ){
       assert.equal(rangeClone[i],range[i]);
@@ -95,9 +95,9 @@ function test_filter(){
     assert.equal(range[ind], el);
     assert.equal(seq[ind],el);
 
-    return el%2==0; 
+    return el%2==0;
   },range);
-  
+
   assert.equal(evensInRange.length, 1);
   assert.equal(evensInRange[0], 4);
 };
@@ -108,7 +108,7 @@ function test_filter_async(){
       serial = 0;
 
   functools.filter.async(function(el,callback){
-    callback(el%2==0); 
+    callback(el%2==0);
   },range, function(evensInRange){
     assert.equal(evensInRange.length, 1);
     assert.equal(evensInRange[0], 4);
@@ -185,7 +185,7 @@ function test_map(){
 
   var range = [3,1,4],
       serial = 0;
-  
+
   var seq = functools.map(function(el,ind,seq){
 
     assert.equal(range.length,seq.length);
@@ -195,7 +195,7 @@ function test_map(){
 
     assert.equal(serial++,ind);
     assert.equal(el,seq[ind]);
-    
+
     return el*el;
   },range);
 
@@ -227,7 +227,7 @@ function test_map(){
 function test_map_async(){
 
   var range = [3,1,4];
-  
+
   functools.map.async(function(el,callback){
     callback(undefined, el*el);
   },range,function(error, seq){
@@ -246,7 +246,7 @@ function test_map_async(){
   });
 
   range = { 'a': 3, 'b': 1, 'c': 4 };
-  
+
   functools.map.async(function(el,callback){ callback(undefined, el*el); }, range, function(error, seq){
 
     if(error){
@@ -281,7 +281,7 @@ function test_partial(){
   var sum = function(){
     return functools.reduce(function(x,y){ return x+y },arguments);
   }
-  
+
   assert.equal(functools.partial(sum,[3,1,4,0])(),8);
   assert.equal(functools.partial(sum)(3,1,4,0),8);
   assert.equal(functools.partial(sum,[3,1])(4,1),9);
@@ -296,7 +296,7 @@ function test_partial(){
 
 function test_reduce(){
   var range = [3,1,4,1,5,9];
-  assert.equal(functools.reduce(function(x,y,seq){ 
+  assert.equal(functools.reduce(function(x,y,seq){
     return x*y;
   },range),540);
 
@@ -304,7 +304,7 @@ function test_reduce(){
 
 function test_reduce_async(){
   var range = [3,1,4,1,5,9];
-  functools.reduce.async(function(x,y,callback){ 
+  functools.reduce.async(function(x,y,callback){
     callback(undefined, x*y);
   },range,function(error, result){
     if(error){
@@ -317,7 +317,7 @@ function test_reduce_async(){
 
 function test_reduce_async_error(){
   var range = [3,1,4,1,5,9];
-  functools.reduce.async(function(_,_,callback){ 
+  functools.reduce.async(function(_,_,callback){
     callback(new Error('foobar'));
   },range,function(error, result){
     assert.equal(error.message, 'foobar');
