@@ -65,6 +65,23 @@ $ wget https://raw.github.com/azer/functools/master/lib/functools.js
 
 # API
 
+* [compose](#compose)
+* [compose.async](#compose.async)
+* [curry](#curry)
+* [each](#each)
+* [filter](#filter)
+* [filter.async](#filter.async)
+* [juxt](#juxt)
+* [juxt.async](#juxt.async)
+* [map](#map)
+* [map.async](#map.async)
+* [memoize](#memoize)
+* [memoize.async](#memoize.async)
+* [partial](#partial)
+* [reduce](#reduce)
+* [reduce.async](#reduce.async)
+
+<a name="compose" />
 ## compose(*functions ...*)(*value*)
 
 Combine *functions* in a new one, passing the result of each function to next
@@ -76,6 +93,7 @@ function cube(x){ return x*x*x };
 compose(Math.sqrt,cube)(4); // returns 8
 ```
 
+<a name="compose.async" />
 ## compose.async(*functions ...*)(*value*,*callback*)
 
 Asynchronous, continuation passing based version of compose function. Requires
@@ -94,7 +112,7 @@ messageTransmission({ msg:"Hello !", 'user': 3 }, function(error, result){
 })
 
 ```
-
+<a name="curry" />
 ## curry(*function*, *args ...*)
 
 Transform multiple-argument *function* into a chain of functions that return each other until all arguments are gathered.
@@ -108,6 +126,7 @@ add3(14); // returns 17
 add3(20); // returns 23
 ```
 
+<a name="each" />
 ## each(*function*,*iterable*)
 
 Call *function* once for element in *iterable*.
@@ -116,6 +135,7 @@ Call *function* once for element in *iterable*.
 each(function(el,ind,list){ console.assert( el == list[ind] ); }, [3, 1, 4]);
 ```
 
+<a name="filter" />
 ## filter(*function*,*iterable*)
 
 Construct a new array from those elements of *iterable* for which *function* returns true.
@@ -124,6 +144,7 @@ Construct a new array from those elements of *iterable* for which *function* ret
 filter(function(el,ind,list){ return el%2==0 }, [3, 1, 4]); // returns [4]
 ```
 
+<a name="filter.async" />
 ## filter.async(*function*,*iterable*, *callback*)
 
 Call async *function* once for each element in *iterable*, receiving a boolean
@@ -142,6 +163,7 @@ filter.async(hasPermission, [3, 1, 4], function(permittedUsers){
 
 ```
 
+<a name="juxt" />
 ## juxt(*functions ...*)
 
 Take a set of functions, return a function that is the juxtaposition of those
@@ -156,6 +178,7 @@ function inc3(n){ return n+3 };
 juxt(inc1, inc2, inc3)(314); // returns [315,316,317]
 ```
 
+<a name="juxt.async" />
 ## juxt.async(*functions ...*)
 
 Async implementation of *juxt*.
@@ -172,6 +195,7 @@ juxt.async(turkish, french, polish)("hello", function(error,  results){
 });
 ```
 
+<a name="map" />
 ## map(*function*,*iterable*)
 
 Invoke *function* once for each element of *iterable*. Creates a new iterable
@@ -198,6 +222,23 @@ function capitalize(){
 map(capitalize, capitalize); // returns { 'en':'Hello', 'tr':'Merhaba', 'fr':'Bonjour' }
 ```
 
+<a name="map.async" />
+## map.async(*function*,*iterable*, *callback*)
+
+Apply async *function* to every item of *iterable*, receiving a callback
+function which takes error (if there is) and replacement parameters.
+
+```javascript
+function readFile(id, callback){ ... callback(undefined, data); }
+
+map.async(readFile, ['./foo/bar', './foo/qux', './corge'], function(error, files){
+  if(error) throw error;
+
+  console.log(files[0]); // will put the content of ./foo/bar
+});
+```
+
+<a name="memoize" />
 ## memoize(*function*,*hasher*)
 
 Return a memoized version of *function*. *hasher* is optional.
@@ -221,6 +262,7 @@ Return a memoized version of *function*. *hasher* is optional.
 30
 ```
 
+<a name="memoize.async" />
 ## memoize.async(*function*, *hasher*)
 
 Memoize given async *function* if it doesn't produce any error.
@@ -243,21 +285,7 @@ Memoize given async *function* if it doesn't produce any error.
 "This is the Readme file"
 ```
 
-## map.async(*function*,*iterable*, *callback*)
-
-Apply async *function* to every item of *iterable*, receiving a callback
-function which takes error (if there is) and replacement parameters.
-
-```javascript
-function readFile(id, callback){ ... callback(undefined, data); }
-
-map.async(readFile, ['./foo/bar', './foo/qux', './corge'], function(error, files){
-  if(error) throw error;
-
-  console.log(files[0]); // will put the content of ./foo/bar
-});
-```
-
+<a name="partial" />
 ## partial(*function*,*initial arguments*,*context *)
 
 Return a new function which will call *function* with the gathered arguments.
@@ -279,6 +307,7 @@ this: 3.14159
 args: 3,14,1,5,9
 ```
 
+<a name="reduce />
 ## reduce(*function*,*iterable*)
 
 Apply *function* cumulatively to the items of *iterable*,  as to reduce the
@@ -288,6 +317,7 @@ Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 reduce(function(x,y){ return x*y }, [3,1,4]); // returns 12
 ```
 
+<a name="reduce.async" />
 ## reduce.async(*function*,*iterable*, *callback*)
 
 Async implementation of *reduce*.
