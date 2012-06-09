@@ -135,7 +135,7 @@ args: 3,14,1,5,9
 Call *function* once for element in *iterable*.
 
 ```javascript
-each([3,1,4], function(el,ind,list){ console.assert( el == list[ind] ); });
+each(function(el,ind,list){ console.assert( el == list[ind] ); }, [3, 1, 4]);
 ```
 
 ## filter(*function*,*iterable*)
@@ -143,7 +143,7 @@ each([3,1,4], function(el,ind,list){ console.assert( el == list[ind] ); });
 Construct a new array from those elements of *iterable* for which *function* returns true.
 
 ```javascript
-filter([3,1,4], function(el,ind,list){ return el%2==0 }); // returns [4]
+filter(function(el,ind,list){ return el%2==0 }, [3, 1, 4]); // returns [4]
 ```
 
 ## filter.async(*function*,*iterable*, *callback*)
@@ -158,8 +158,8 @@ var users = [ 3, 5, 8, 13, 21 ]; // only user#3 and user#8 have permission in th
 
 function hasPermission(userId, callback){ ... callback(/* true or false */); }
 
-filter.async(users, hasPermission, function(permittedUsers){
-  assert.equal(permittedUsers.length, 4);
+filter.async(hasPermission, [3, 1, 4], function(permittedUsers){
+  assert.equal(permittedUsers.length, /* ? */);
 });
 
 ```
@@ -205,7 +205,7 @@ function square(n){
   return n*n;
 }
 
-map([3,1,4,1,5,9], square); // returns [9,1,16,1,25,81]
+map(square, [3,1,4,1,5,9]); // returns [9,1,16,1,25,81]
 ```
 
 Objects can be passed as well;
@@ -217,7 +217,7 @@ function capitalize(){
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-map(dict, capitalize); // returns { 'en':'Hello', 'tr':'Merhaba', 'fr':'Bonjour' }
+map(capitalize, capitalize); // returns { 'en':'Hello', 'tr':'Merhaba', 'fr':'Bonjour' }
 ```
 
 ## map.async(*function*,*iterable*, *callback*)
@@ -228,7 +228,7 @@ function which takes error (if there is) and replacement parameters.
 ```javascript
 function readFile(id, callback){ ... callback(undefined, data); }
 
-map.async(['./foo/bar', './foo/qux', './corge'], readFile, function(error, files){
+map.async(readFile, ['./foo/bar', './foo/qux', './corge'], function(error, files){
   if(error) throw error;
 
   console.log(files[0]); // will put the content of ./foo/bar
@@ -241,7 +241,7 @@ Apply *function* cumulatively to the items of *iterable*,  as to reduce the
 *iterable* to a single value
 
 ```javascript
-reduce([3,1,4], function(x,y){ return x*y }); // returns 12
+reduce(function(x,y){ return x*y }, [3,1,4]); // returns 12
 ```
 
 ## reduce.async(*function*,*iterable*, *callback*)
@@ -254,7 +254,7 @@ var users = [2, 3, 5, 8, 13];
 
 function usernames(accum, userId){ ... callback(undefined, accum + ', ' + username); }
 
-reduce.async(users, usernames, function(error, result){
+reduce.async(usernames, users, function(error, result){
   if(error) throw error;
 
   console.log(result); // foo, bar, qux ...

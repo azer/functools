@@ -61,8 +61,8 @@ function test_compose_async(callback){
 }
 
 function test_compose_async_error(callback){
-  function err(_,callback){ 
-    callback(new Error('foobar'),9); 
+  function err(_,callback){
+    callback(new Error('foobar'),9);
   };
 
   functools.compose.async(err)([3,1,4], function(error, result){
@@ -88,13 +88,13 @@ function test_each(callback){
   var range = [3,1,4,1,5,9],
       serial = 0;
 
-  assert.equal(functools.each(range, function(el,ind,seq){
+  assert.equal(functools.each(function(el,ind,seq){
 
     assert.equal(seq,range);
     assert.equal(ind,serial++);
     assert.ok(ind<seq.length);
 
-  }),range);
+  }, range),range);
 
   callback();
 
@@ -105,7 +105,7 @@ function test_filter(callback){
       rangeClone = Array.prototype.slice.call(range),
       serial = 0;
 
-  var evensInRange = functools.filter(range, function(el,ind,seq){
+  var evensInRange = functools.filter(function(el,ind,seq){
 
     assert.equal(range.length, rangeClone.length);
 
@@ -119,7 +119,7 @@ function test_filter(callback){
     assert.equal(seq[ind],el);
 
     return el%2==0;
-  });
+  }, range);
 
   assert.equal(evensInRange.length, 1);
   assert.equal(evensInRange[0], 4);
@@ -132,9 +132,9 @@ function test_filter_async(callback){
       rangeClone = Array.prototype.slice.call(range),
       serial = 0;
 
-  functools.filter.async(range, function(el,callback){
+  functools.filter.async(function(el,callback){
     callback(el%2==0);
-  }, function(evensInRange){
+  }, range, function(evensInRange){
     assert.equal(evensInRange.length, 1);
     assert.equal(evensInRange[0], 4);
 
@@ -230,7 +230,7 @@ function test_map(callback){
   var range = [3,1,4],
       serial = 0;
 
-  var seq = functools.map(range, function(el,ind,seq){
+  var seq = functools.map(function(el,ind,seq){
 
     assert.equal(range.length,seq.length);
     for(var i = ind-1, len=range.length; ++i < len; ){
@@ -241,7 +241,7 @@ function test_map(callback){
     assert.equal(el,seq[ind]);
 
     return el*el;
-  });
+  }, range);
 
   assert.equal(range[0], 3);
   assert.equal(range[1], 1);
@@ -253,10 +253,10 @@ function test_map(callback){
 
   range = { 'a': 3, 'b': 1, 'c': 4 };
 
-  seq = functools.map(range, function(el, key, self){
+  seq = functools.map(function(el, key, self){
     assert.equal(el, range[key]);
     return el * el;
-  });
+  }, range);
 
   assert.equal(range.a, 3);
   assert.equal(range.b, 1);
@@ -274,9 +274,9 @@ function test_map_async(callback){
 
   var range = [3,1,4];
 
-  functools.map.async(range, function(el,callback){
+  functools.map.async(function(el,callback){
     callback(undefined, el*el);
-  },function(error, seq){
+  }, range, function(error, seq){
 
     if(error){
       throw error;
@@ -292,7 +292,7 @@ function test_map_async(callback){
 
     range = { 'a': 3, 'b': 1, 'c': 4 };
 
-    functools.map.async(range, function(el,callback){ callback(undefined, el*el); }, function(error, seq){
+    functools.map.async(function(el,callback){ callback(undefined, el*el); }, range, function(error, seq){
 
       if(error){
         throw error;
@@ -315,7 +315,7 @@ function test_map_async(callback){
 };
 
 function test_map_async_error(callback){
-  functools.map.async([3,1,4],function(_,callback){ callback(new Error('foobar'),9); },function(error, list){
+  functools.map.async(function(_,callback){ callback(new Error('foobar'),9); }, [3, 1, 4], function(error, list){
     assert.equal(list[0], 9);
     assert.equal(list[1], 1);
     assert.equal(list[2], 4);
