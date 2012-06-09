@@ -1,7 +1,7 @@
 functools is a JavaScript library for functional programming.
 
 Inspired by: Common Lisp, Clojure and Python.
-Tested on: Chrome, IE6 and Node. (See test/results.json for details)
+Tested on: Chrome, IE6 and Node. (See *test/results.json* for details)
 
 # SYNOPSIS
 
