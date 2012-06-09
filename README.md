@@ -69,6 +69,7 @@ $ wget https://raw.github.com/azer/functools/master/lib/functools.js
 * [compose.async](#compose.async)
 * [curry](#curry)
 * [each](#each)
+* [each.async](#each.async)
 * [filter](#filter)
 * [filter.async](#filter.async)
 * [juxt](#juxt)
@@ -129,10 +130,36 @@ add3(20); // returns 23
 <a name="each" />
 ## each(*function*,*iterable*)
 
-Call *function* once for element in *iterable*.
+Call *function* once for each element in *iterable*.
 
 ```javascript
 each(function(el,ind,list){ console.assert( el == list[ind] ); }, [3, 1, 4]);
+```
+
+<a name="each.async" />
+## each(*function*,*iterable*,*callback*)
+
+Call async *function* once for each element in *iterable*, and *callback* after iteration.
+
+```javascript
+
+> function uploadFile(filename, index, files, callback){ console.log('Uploading ', filename); callback(); }
+
+> each.async(uploadFile, [ '/docs/intro', '/docs/body', '/docs/outro' ], function(error){
+
+  if(error){
+    console.log('Failed to upload files');
+    throw error;
+  }
+
+  console.log('All files has been uploaded successfully');
+
+});
+
+> Uploading /docs/intro
+Uploading /docs/body
+Uploading /docs/outro
+All files has been uploaded successfully
 ```
 
 <a name="filter" />

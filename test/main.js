@@ -97,7 +97,40 @@ function test_each(callback){
   }, range),range);
 
   callback();
+}
 
+function test_each_async(callback){
+  var range = [1, 2, 3, 4, 5],
+      serial = 0;
+
+  functools.each.async(function(el, ind, seq, callback){
+
+    assert.equal(seq,range);
+    assert.equal(ind,serial++);
+    assert.ok(ind<seq.length);
+
+    callback();
+
+  }, range, function(){
+    assert.equal(serial, range.length);
+    callback();
+  });
+}
+
+
+function test_each_async_error(callback){
+  var range = [1, 2, 3, 4, 5],
+      serial = 0;
+
+  functools.each.async(function(el, ind, seq, callback){
+
+    callback( ++serial == 2 ? new Error('foobar') : undefined );
+
+  }, range, function(error){
+    assert.equal(error.message, 'foobar');
+    assert.equal(serial, 2);
+    callback();
+  });
 }
 
 function test_filter(callback){
@@ -512,6 +545,8 @@ module.exports = {
   'test_compose_async_error': test_compose_async_error,
   'test_curry': test_curry,
   'test_each': test_each,
+  'test_each_async': test_each_async,
+  'test_each_async_error': test_each_async_error,
   'test_filter': test_filter,
   'test_filter_async': test_filter_async,
   'test_juxt': test_juxt,
