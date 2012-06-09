@@ -325,6 +325,134 @@ function test_map_async_error(callback){
   });
 }
 
+function test_memoize(callback){
+
+  var table = {};
+
+  function mark(n){
+    if(table.hasOwnProperty(n)){
+      throw new Error('memoization error');
+    }
+    table[n] = true;
+  }
+
+  var plus1 = functools.memoize(function(n){
+    mark(n);
+    return n+1;
+  });
+
+  assert.equal(plus1(1), 2);
+  assert.equal(plus1(1), 2);
+
+  assert.equal(plus1(2), 3);
+  assert.equal(plus1(2), 3);
+
+  assert.equal(plus1(3), 4);
+  assert.equal(plus1(3), 4);
+
+  callback();
+}
+
+function test_memoize_async(callback){
+  var table = {};
+
+  function mark(n){
+    if(table.hasOwnProperty(n)){
+      throw new Error('memoization error');
+    }
+    table[n] = true;
+  }
+
+  var plus1 = functools.memoize.async(function(n, cb){
+    mark(n);
+    setTimeout(cb, 100, undefined, n+1);
+  });
+
+  plus1(1, function(error, result){
+    assert.ok(!error);
+    assert.equal(result, 2);
+  });
+
+  plus1(1, function(error, result){
+
+    assert.ok(!error);
+    assert.equal(result, 2);
+
+    plus1(1, function(error, result){
+
+      assert.ok(!error);
+      assert.equal(result, 2);
+
+
+      plus1(2, function(error, result){
+
+        assert.ok(!error);
+        assert.equal(result, 3);
+
+
+        plus1(2, function(error, result){
+
+          assert.ok(!error);
+          assert.equal(result, 3);
+
+          callback();
+
+        });
+
+      });
+
+    });
+
+  });
+}
+
+function test_memoize_async_error(callback){
+  var table = {}, throwErr = true;
+
+  function mark(n){
+    if(table.hasOwnProperty(n)){
+      throw new Error('memoization error');
+    }
+    table[n] = true;
+  }
+
+  var plus1 = functools.memoize.async(function(n, cb){
+    if(throwErr){
+      throwErr = false;
+      setTimeout(cb, 100, new Error('foobar'));
+      return;
+    }
+
+    mark(n);
+    setTimeout(cb, 100, undefined, n+1);
+  });
+
+  plus1(1, function(error, result){
+    assert.ok(!result);
+    assert.equal(error.message, 'foobar');
+  });
+
+  plus1(1, function(error, result){
+    assert.ok(!result);
+    assert.equal(error.message, 'foobar');
+
+    plus1(1, function(error, result){
+      assert.ok(!error);
+      assert.equal(result, 2);
+
+      plus1(1, function(error, result){
+
+        assert.ok(!error);
+        assert.equal(result, 2);
+
+        callback();
+
+      });
+
+    });
+
+  });
+}
 
 function test_partial(callback){
   function sum(){
@@ -379,21 +507,25 @@ function test_reduce_async_error(callback){
 };
 
 module.exports = {
-  'test_compose':test_compose,
-  'test_compose_async':test_compose_async,
-  'test_compose_async_error':test_compose_async_error,
-  'test_curry':test_curry,
-  'test_each':test_each,
-  'test_filter':test_filter,
-  'test_filter_async':test_filter_async,
-  'test_juxt':test_juxt,
-  'test_juxt_async':test_juxt_async,
-  'test_map':test_map,
-  'test_map_async':test_map_async,
-  'test_map_async_error':test_map_async_error,
-  'test_partial':test_partial,
-  'test_reduce':test_reduce,
-  'test_reduce_async':test_reduce_async,
-  'test_reduce_async_error':test_reduce_async_error,
-  'test_partial':test_partial
+  'test_compose': test_compose,
+  'test_compose_async': test_compose_async,
+  'test_compose_async_error': test_compose_async_error,
+  'test_curry': test_curry,
+  'test_each': test_each,
+  'test_filter': test_filter,
+  'test_filter_async': test_filter_async,
+  'test_juxt': test_juxt,
+  'test_juxt_async': test_juxt_async,
+  'test_map': test_map,
+  'test_map_async': test_map_async,
+  'test_map_async_error': test_map_async_error,
+  'test_memoize':  test_memoize,
+  'test_memoize_async':  test_memoize_async,
+  'test_memoize_async_error':  test_memoize_async_error,
+  'test_partial': test_partial,
+  'test_reduce': test_reduce,
+  'test_reduce_async': test_reduce_async,
+  'test_reduce_async_error': test_reduce_async_error,
+  'test_partial': test_partial
+
 };
