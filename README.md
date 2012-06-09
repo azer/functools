@@ -108,28 +108,6 @@ add3(14); // returns 17
 add3(20); // returns 23
 ```
 
-
-## partial(*function*,*initial arguments*,*context *)
-
-Return a new function which will call *function* with the gathered arguments.
-
-```javascript
-function testPartial(){
-  var args = reduce(function(x,y){ x+", "+y },arguments);
-
-  console.log("this:",this);
-  console.log("args:",args);
-}
-
-partial(testPartial, [3,14], 3.14159)(1,5,9);
-```
-
-The example code above will output:
-```
-this: 3.14159
-args: 3,14,1,5,9
-```
-
 ## each(*function*,*iterable*)
 
 Call *function* once for element in *iterable*.
@@ -220,6 +198,51 @@ function capitalize(){
 map(capitalize, capitalize); // returns { 'en':'Hello', 'tr':'Merhaba', 'fr':'Bonjour' }
 ```
 
+## memoize(*function*,*hasher*)
+
+Return a memoized version of *function*. *hasher* is optional.
+
+```javascript
+> function myfunc(n){
+    console.log("doing some work");
+    return n + 10;
+}
+
+> var myfuncMemo = memoize(myfunc);
+> myfuncMemo(1);
+"doing some work"
+11
+> myfuncMemo(1);
+11
+> myfuncMemo(20);
+"doing some work"
+30
+> myfuncMemo(20);
+30
+```
+
+## memoize.async(*function*, *hasher*)
+
+Memoize given async *function* if it doesn't produce any error.
+
+```javascript
+> function readFile(){ console.log('Please wait...'); ... callback(undefined, buffer); }
+
+> var readFileMemo = memoize.async(readFile);
+
+> readFileMemo('/docs/readme', function(error, content){
+    console.log(content);
+});
+"Please wait..."
+
+> "This is the Readme file"
+
+> readFileMemo('/docs/readme', function(error, content){
+    console.log(content);
+});
+"This is the Readme file"
+```
+
 ## map.async(*function*,*iterable*, *callback*)
 
 Apply async *function* to every item of *iterable*, receiving a callback
@@ -233,6 +256,27 @@ map.async(readFile, ['./foo/bar', './foo/qux', './corge'], function(error, files
 
   console.log(files[0]); // will put the content of ./foo/bar
 });
+```
+
+## partial(*function*,*initial arguments*,*context *)
+
+Return a new function which will call *function* with the gathered arguments.
+
+```javascript
+function testPartial(){
+  var args = reduce(function(x,y){ x+", "+y },arguments);
+
+  console.log("this:",this);
+  console.log("args:",args);
+}
+
+partial(testPartial, [3,14], 3.14159)(1,5,9);
+```
+
+The example code above will output:
+```
+this: 3.14159
+args: 3,14,1,5,9
 ```
 
 ## reduce(*function*,*iterable*)
