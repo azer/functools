@@ -226,14 +226,14 @@ Return a memoized version of *function*. *hasher* is optional.
 Memoize given async *function* if it doesn't produce any error.
 
 ```javascript
-> function readFile(){ console.log('Please wait...'); ... callback(undefined, buffer); }
+> function readFile(){ console.log('doing some work'); ... callback(undefined, buffer); }
 
 > var readFileMemo = memoize.async(readFile);
 
 > readFileMemo('/docs/readme', function(error, content){
     console.log(content);
 });
-"Please wait..."
+"doing some work"
 
 > "This is the Readme file"
 
