@@ -65,12 +65,12 @@ $ wget https://raw.github.com/azer/functools/master/lib/functools.js
 
 # WHAT'S NEW?
 
-09.06.2012
+06.09.2012
 * each.async
 * memoize
 * memoize.async
 
-06.06.2012
+06.08.2012
 * IE6, IE7 and IE8 bugfixes
 * better testing
 
