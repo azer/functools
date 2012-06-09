@@ -1,6 +1,6 @@
 {
   "name":"functools",
-  "version":"1.2.0",
+  "version":"1.3.0",
   "description":"A minimal library of functional operations",
   "author":"Azer Koculu <azer@kodfabrik.com>",
   "keywords":["functional","fp"],
@@ -10,5 +10,8 @@
   "devDependencies":{
     "lowkick":"0.x",
     "highkick":"1.x"
+  },
+  "scripts":{
+    "test":"./node_modules/.bin/highkick test/main.js"
   }
 }
