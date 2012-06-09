@@ -1,0 +1,27 @@
+{
+  "name": "functools test server",
+  "target": "results.json",
+  "logs": "logs",
+
+  "environ": [
+    "ie6",
+    "ie7",
+    "ie8",
+    "firefox",
+    "webkit"
+  ],
+
+  "server": {
+    "host": "localhost",
+    "port": "1314"
+  },
+
+  "scripts":[
+    "ext/es5-shim.min.js",
+    "../lib/functools.js",
+    "browser.js",
+    "main.js"
+  ]
+
+
+}

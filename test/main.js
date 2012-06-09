@@ -1,19 +1,9 @@
 var node = typeof process != 'undefined' && process.versions && process.versions.node != undefined;
 
 if(node){
-  assert  = require('assert');
   functools = require("../lib/functools");
-} else {
-  module = {};
-  assert = {
-    'equal': function(a, b){
-      if( a !== b ){
-        throw new Error('Assertion Error: '+ a +' != ' + b);
-      }
-    }
-  };
+  assert  = require('assert');
 }
-
 
 function cube(x){ return x*x*x; };
 function sum(x){ return x+x; };
@@ -98,13 +88,13 @@ function test_each(callback){
   var range = [3,1,4,1,5,9],
       serial = 0;
 
-  assert.equal(functools.each(function(el,ind,seq){
+  assert.equal(functools.each(range, function(el,ind,seq){
 
     assert.equal(seq,range);
     assert.equal(ind,serial++);
     assert.ok(ind<seq.length);
 
-  },range),range);
+  }),range);
 
   callback();
 
@@ -115,7 +105,7 @@ function test_filter(callback){
       rangeClone = Array.prototype.slice.call(range),
       serial = 0;
 
-  var evensInRange = functools.filter(function(el,ind,seq){
+  var evensInRange = functools.filter(range, function(el,ind,seq){
 
     assert.equal(range.length, rangeClone.length);
 
@@ -129,7 +119,7 @@ function test_filter(callback){
     assert.equal(seq[ind],el);
 
     return el%2==0;
-  },range);
+  });
 
   assert.equal(evensInRange.length, 1);
   assert.equal(evensInRange[0], 4);
@@ -142,9 +132,9 @@ function test_filter_async(callback){
       rangeClone = Array.prototype.slice.call(range),
       serial = 0;
 
-  functools.filter.async(function(el,callback){
+  functools.filter.async(range, function(el,callback){
     callback(el%2==0);
-  },range, function(evensInRange){
+  }, function(evensInRange){
     assert.equal(evensInRange.length, 1);
     assert.equal(evensInRange[0], 4);
 
@@ -176,7 +166,6 @@ function test_juxt(callback){
   assert.equal(result.mul, 6);
 
   callback();
-
 }
 
 function test_juxt_async(callback){
@@ -199,8 +188,6 @@ function test_juxt_async(callback){
     assert.equal(result[1], unaltered+2);
     assert.equal(result[2], unaltered+3);
 
-    console.log(2);
-
     functools.juxt.async(cubeAsync, sumAsync, divAsync, mulAsync)(2,function(error, result){
 
       if(error){
@@ -212,6 +199,7 @@ function test_juxt_async(callback){
       assert.equal(result[1], 4);
       assert.equal(result[2], 1);
       assert.equal(result[3], 6);
+
 
       functools.juxt.async({ 'cube':cubeAsync, 'sum':sumAsync, 'div':divAsync, 'mul':mulAsync })(2,function(error, result){
 
@@ -242,7 +230,7 @@ function test_map(callback){
   var range = [3,1,4],
       serial = 0;
 
-  var seq = functools.map(function(el,ind,seq){
+  var seq = functools.map(range, function(el,ind,seq){
 
     assert.equal(range.length,seq.length);
     for(var i = ind-1, len=range.length; ++i < len; ){
@@ -253,7 +241,7 @@ function test_map(callback){
     assert.equal(el,seq[ind]);
 
     return el*el;
-  },range);
+  });
 
   assert.equal(range[0], 3);
   assert.equal(range[1], 1);
@@ -265,10 +253,10 @@ function test_map(callback){
 
   range = { 'a': 3, 'b': 1, 'c': 4 };
 
-  seq = functools.map(function(el, key, self){
+  seq = functools.map(range, function(el, key, self){
     assert.equal(el, range[key]);
     return el * el;
-  }, range);
+  });
 
   assert.equal(range.a, 3);
   assert.equal(range.b, 1);
@@ -286,9 +274,9 @@ function test_map_async(callback){
 
   var range = [3,1,4];
 
-  functools.map.async(function(el,callback){
+  functools.map.async(range, function(el,callback){
     callback(undefined, el*el);
-  },range,function(error, seq){
+  },function(error, seq){
 
     if(error){
       throw error;
@@ -304,7 +292,7 @@ function test_map_async(callback){
 
     range = { 'a': 3, 'b': 1, 'c': 4 };
 
-    functools.map.async(function(el,callback){ callback(undefined, el*el); }, range, function(error, seq){
+    functools.map.async(range, function(el,callback){ callback(undefined, el*el); }, function(error, seq){
 
       if(error){
         throw error;
@@ -327,7 +315,7 @@ function test_map_async(callback){
 };
 
 function test_map_async_error(callback){
-  functools.map.async(function(_,callback){ callback(new Error('foobar'),9); },[3,1,4],function(error, list){
+  functools.map.async([3,1,4],function(_,callback){ callback(new Error('foobar'),9); },function(error, list){
     assert.equal(list[0], 9);
     assert.equal(list[1], 1);
     assert.equal(list[2], 4);
@@ -339,7 +327,7 @@ function test_map_async_error(callback){
 
 
 function test_partial(callback){
-  var sum = function(){
+  function sum(){
     return functools.reduce(function(x,y){ return x+y },arguments);
   };
 

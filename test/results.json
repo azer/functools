@@ -1,0 +1,18 @@
+{
+    "environ": {
+        "navigator": true,
+        "modules": true,
+        "ie6": true,
+        "ie": true,
+        "dom": true,
+        "bind": true,
+        "v8": true,
+        "webkit": true,
+        "safari": true,
+        "gecko": true,
+        "chrome": true
+    },
+    "revision": "1.3.0",
+    "ok": true,
+    "serverTime": 1339206544529
+}

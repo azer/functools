@@ -1,11 +1,6 @@
-install:
-	cp -rf ../functools ~/.node_modules/foo
+do=publish
 
-docs:
-	cd man; \
-	ronn functools.1.ron -r -5 --markdown
+test:
+	./node_modules/lowkick/bin/lowkick $(do) test/config.json
 
 .PHONY: test
-test:
-	cd test; \
-	node node.js
