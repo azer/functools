@@ -154,7 +154,10 @@ Call async *function* once for each element in *iterable*, and *callback* after 
 
 ```javascript
 
-> function uploadFile(filename, index, files, callback){ console.log('Uploading ', filename); callback(); }
+> function uploadFile(filename, index, files, callback){ 
+  console.log('Uploading ', filename); 
+  callback(); 
+}
 
 > each.async(uploadFile, [ '/docs/intro', '/docs/body', '/docs/outro' ], function(error){
 
