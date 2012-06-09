@@ -74,7 +74,7 @@ $ wget https://raw.github.com/azer/functools/master/lib/functools.js
 * IE6, IE7 and IE8 bugfixes
 * better testing
 
-# API
+# DOCUMENTATION
 
 * [compose](#compose)
 * [compose.async](#compose.async)
