@@ -257,11 +257,11 @@ Objects can be passed as well;
 ```javascript
 var dict = { 'en':'hello', 'tr': 'merhaba', 'fr':'bonjour' };
 
-function capitalize(){
-  return string.charAt(0).toUpperCase() + string.slice(1);
+function capitalize(str){
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-map(capitalize, capitalize); // returns { 'en':'Hello', 'tr':'Merhaba', 'fr':'Bonjour' }
+map(capitalize, dict); // returns { 'en':'Hello', 'tr':'Merhaba', 'fr':'Bonjour' }
 ```
 
 <a name="map.async" />
