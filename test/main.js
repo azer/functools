@@ -103,11 +103,9 @@ function test_each_async(callback){
   var range = [1, 2, 3, 4, 5],
       serial = 0;
 
-  functools.each.async(function(el, ind, seq, callback){
+  functools.each.async(function(el, callback){
 
-    assert.equal(seq,range);
-    assert.equal(ind,serial++);
-    assert.ok(ind<seq.length);
+    assert.equal(el,range[serial++]);
 
     callback();
 
@@ -122,7 +120,7 @@ function test_each_async_error(callback){
   var range = [1, 2, 3, 4, 5],
       serial = 0;
 
-  functools.each.async(function(el, ind, seq, callback){
+  functools.each.async(function(el, callback){
 
     callback( ++serial == 2 ? new Error('foobar') : undefined );
 
