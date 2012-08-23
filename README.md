@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/azer/functools.png)](http://travis-ci.org/azer/functools)
 functools is a JavaScript library for functional programming.
 
 Inspired by: Common Lisp, Clojure and Python.
