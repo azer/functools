@@ -334,7 +334,7 @@ Return a new function which will call *function* with the gathered arguments.
 
 ```javascript
 function testPartial(){
-  var args = reduce(function(x,y){ x+", "+y },arguments);
+  var args = reduce(function(x,y){ return x+", "+y },arguments);
 
   console.log("this:",this);
   console.log("args:",args);
@@ -349,7 +349,7 @@ this: 3.14159
 args: 3,14,1,5,9
 ```
 
-<a name="reduce />
+<a name="reduce" />
 ## reduce(*function*,*iterable*)
 
 Apply *function* cumulatively to the items of *iterable*,  as to reduce the
