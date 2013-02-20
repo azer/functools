@@ -109,9 +109,7 @@ compose(Math.sqrt,cube)(4); // returns 8
 <a name="compose.async" />
 ## compose.async(*functions ...*)(*value*,*callback*)
 
-Asynchronous, continuation passing based version of compose function. Requires
-specified functions to call a callback function, passing an error object (if
-there is one) and the result to be carried.
+Asynchronous function composition.
 
 ```javascript
 var messageTransmission = compose.async(receiveMessage, findRelatedUser, transmitMessage);
