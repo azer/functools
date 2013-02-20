@@ -116,13 +116,13 @@ there is one) and the result to be carried.
 ```javascript
 var messageTransmission = compose.async(receiveMessage, findRelatedUser, transmitMessage);
 
-messageTransmission({ msg:"Hello !", 'user': 3 }, function(error, result){
-  ...
+messageTransmission({ msg: "Hello!", 'from': 3, 'to': 1 }, function(error, result){
+  //
 })
 
-function receiveMessage(msg, callback){ callback(); }
-function findRelatedUser(msg, callback){ callback(null, user, msg); }
-function transmitMessage(user, message){ callback(); }
+function receiveMessage(msg, callback){}
+function findUserProfiles(msg, callback){}
+function transmitMessage(from, message, callback){}
 ```
 <a name="curry" />
 ## curry(*function*, *args ...*)
