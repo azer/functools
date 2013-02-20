@@ -121,8 +121,8 @@ messageTransmission({ msg: "Hello!", 'from': 3, 'to': 1 }, function(error, resul
 })
 
 function receiveMessage(msg, callback){}
-function findUserProfiles(msg, callback){}
-function transmitMessage(from, message, callback){}
+function findUserProfiles(msg, callback){ ... callback(null /* <- error */, from, to, msg); }
+function transmitMessage(from, to, message, callback){}
 ```
 <a name="curry" />
 ## curry(*function*, *args ...*)
