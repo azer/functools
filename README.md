@@ -13,6 +13,7 @@ var compose = require("functools").compose;
 compose(select, update, prettify, display)("body .messages");
 ```
 
+<a name="async-function-composition"></a>
 Async Function Compositon:
 
 ```javascript
