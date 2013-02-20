@@ -114,16 +114,15 @@ specified functions to call a callback function, passing an error object (if
 there is one) and the result to be carried.
 
 ```javascript
-function receiveMessage(message, callback){ ... callback(); }
-function findRelatedUser(message, callback){ ... callback(null, user, message); }
-function transmitMessage(user, message){ ... callback(); }
-
 var messageTransmission = compose.async(receiveMessage, findRelatedUser, transmitMessage);
 
 messageTransmission({ msg:"Hello !", 'user': 3 }, function(error, result){
   ...
 })
 
+function receiveMessage(msg, callback){ callback(); }
+function findRelatedUser(msg, callback){ callback(null, user, msg); }
+function transmitMessage(user, message){ callback(); }
 ```
 <a name="curry" />
 ## curry(*function*, *args ...*)
