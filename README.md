@@ -112,14 +112,14 @@ compose(Math.sqrt,cube)(4); // returns 8
 Asynchronous function composition.
 
 ```javascript
-var messageTransmission = compose.async(receiveMessage, findRelatedUser, transmitMessage);
+var messageTransmission = compose.async(receiveMessage, getUserProfiles, transmitMessage);
 
 messageTransmission({ msg: "Hello!", 'from': 3, 'to': 1 }, function(error, result){
   //
 })
 
 function receiveMessage(msg, callback){}
-function findUserProfiles(msg, callback){ ... callback(null /* <- error */, from, to, msg); }
+function getUserProfiles(msg, callback){ ... callback(null, from, to, msg); }
 function transmitMessage(from, to, message, callback){}
 ```
 <a name="curry" />
